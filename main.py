@@ -86,6 +86,8 @@ async def redirect_url(endpoint: str):
     pool = await postgres.get_connection()
     async with pool.acquire() as connection:
         response = await connection.fetchrow('SELECT * FROM links WHERE modified = $1', endpoint)
+    if response is None:
+        return RedirectResponse('/')
     original_url = dict(response)['original']
     await caching.record_in_cache(endpoint, original_url)
     return RedirectResponse(original_url + '/' if original_url[-1] != '/' else original_url)
