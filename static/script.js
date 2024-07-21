@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const shortenForm = document.getElementById('shortenForm');
 
     shortenForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Предотвращаем стандартное действие submit
+        event.preventDefault();
         if (shortenForm.checkValidity()) {
             shortenLink();
         }

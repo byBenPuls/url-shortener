@@ -81,13 +81,14 @@ async def url_handler(item: Item, request: Request):
 @app.get('/{endpoint}')
 async def redirect_url(endpoint: str):
     if await caching.in_cache(endpoint):
-        return RedirectResponse(await caching.get_from_cache(endpoint) + '/')
+        original_url = await caching.get_from_cache(endpoint)
+        return RedirectResponse(original_url + '/' if original_url[-1] != '/' else original_url)
     pool = await postgres.get_connection()
     async with pool.acquire() as connection:
         response = await connection.fetchrow('SELECT * FROM links WHERE modified = $1', endpoint)
     original_url = dict(response)['original']
     await caching.record_in_cache(endpoint, original_url)
-    return RedirectResponse(original_url + '/')
+    return RedirectResponse(original_url + '/' if original_url[-1] != '/' else original_url)
 
 
 if __name__ == "__main__":
