@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Сокращение ссылок</title>
+<title>URL Shortener</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Сокращение ссылок</h1>
+    <h1 class="text-center mb-4">URL Shortener</h1>
     <form id="shortenForm" class="row justify-content-center needs-validation" novalidate>
         <div class="col-md-6">
             <div class="input-group mb-3">
                 <input type="url" class="form-control" placeholder="Введите URL для сокращения" id="originalUrl" required>
             </div>
-            <button type="submit" class="btn btn-primary">Сократить ссылку</button>
-            <div class="invalid-feedback">Пожалуйста, введите корректный URL.</div>
+            <button type="submit" class="btn btn-primary">Make!</button>
+            <div class="invalid-feedback">Please, type a correct URL</div>
         </div>
     </form>
     <div id="shortenedLink" class="text-center mt-3 d-none">
-        <h3>Сокращенная ссылка:</h3>
+        <h3>Short link:</h3>
         <a id="shortLink" href="#" target="_blank"></a>
     </div>
 </div>
