@@ -1,10 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     const shortenForm = document.getElementById('shortenForm');
+    const shortLinkElement = document.getElementById('shortLink');
 
     shortenForm.addEventListener('submit', function(event) {
+        const originalUrl = document.getElementById('originalUrl').value;
         event.preventDefault();
-        if (shortenForm.checkValidity()) {
+        if (shortenForm.checkValidity()
+            && removeTrailingSlash(originalUrl) !== removeTrailingSlash(shortLinkElement.textContent)) {
             shortenLink();
+        } else {
+            console.log('links are sames')
         }
         shortenForm.classList.add('was-validated');
     });
@@ -26,7 +31,7 @@ async function shortenLink() {
             const data = await response.json();
             displayShortenedLink(data.endpoint);
         } else {
-            console.error('Ошибка при сокращении ссылки');
+            console.error('Error');
         }
     } catch (error) {
         console.error('Ошибка:', error);
@@ -41,4 +46,9 @@ function displayShortenedLink(shortLink) {
     shortLinkElement.textContent = shortLink;
 
     shortenedLink.classList.remove('d-none');
+}
+
+
+function removeTrailingSlash(url) {
+    return url.replace(/\/$/, "");
 }
