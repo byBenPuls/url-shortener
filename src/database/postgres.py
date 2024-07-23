@@ -1,5 +1,6 @@
 import logging
 import asyncpg
+
 from pg_table_builder import Table, Column, Text, Serial
 from typing import Optional
 
@@ -10,7 +11,7 @@ table = Table(
     Column('modified', Text())
 )
 
-# variable `table` returning SQL query for create table however has type str
+# variable `table` returning SQL query for creation table, however has a type str
 # library pg_table_builder doesn't have shielding from SQL injections because be careful
 
 logger = logging.getLogger(__name__)
@@ -27,7 +28,7 @@ class Database:
         Returning database pool.
 
         Returns:
-            In case of success return pool else `None`
+            In a case of success return pool else `None`
         """
 
         return self.pool
@@ -37,7 +38,7 @@ class Database:
         Creating database pool
 
         Raises:
-            Exception: If connection not established then raising exception
+            Exception: If connection is not established then raising exception
         """
         logger.debug('Connecting to database..')
         self.pool = await asyncpg.create_pool(**(self.dsn if self.dsn is not None else self.cfg))

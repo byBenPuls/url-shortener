@@ -1,4 +1,4 @@
-from database.redis import RedisPool
+from src.database.redis import RedisPool
 
 redis = RedisPool()
 

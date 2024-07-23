@@ -2,9 +2,8 @@ import os
 import string
 import random
 import logging
-import uvicorn
 
-import database.caching as caching
+import src.database.caching as caching
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
@@ -13,8 +12,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
-from database.caching import redis
-from database.postgres import Database
+from src.database.caching import redis
+from src.database.postgres import Database
 
 postgres = Database(dsn=os.getenv('DB_CONNECTION_STRING'))
 
@@ -35,11 +34,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.mount("/src/static", StaticFiles(directory="src/static", html=True), name="static")
 
-static_dir = os.path.join(os.path.dirname(__file__), "static")
-app.mount("/static", StaticFiles(directory=static_dir, html=True), name="static")
-
-templates = Jinja2Templates(directory='static')
+templates = Jinja2Templates(directory='src/static')
 
 
 class Item(BaseModel):
@@ -74,7 +71,8 @@ async def url_handler(item: Item, request: Request):
                                  item.original_url, endpoint)
     await caching.record_in_cache(endpoint, item.original_url)
     return {
-        'endpoint': f'http://{request.url.hostname}/{endpoint}/'
+        'endpoint': f'http://{request.url.hostname}/{endpoint}/',
+        'data': f'{request.url.is_secure}'
     }
 
 
@@ -91,7 +89,3 @@ async def redirect_url(endpoint: str):
     original_url = dict(response)['original']
     await caching.record_in_cache(endpoint, original_url)
     return RedirectResponse(original_url + '/' if original_url[-1] != '/' else original_url)
-
-
-if __name__ == "__main__":
-    uvicorn.run('main:app')
