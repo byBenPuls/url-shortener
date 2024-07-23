@@ -31,10 +31,10 @@ async function shortenLink() {
             const data = await response.json();
             displayShortenedLink(data.endpoint);
         } else {
-            console.error('Error');
+            console.error('Cannot get response from server!');
         }
     } catch (error) {
-        console.error('Ошибка:', error);
+        console.error('Error:', error);
     }
 }
 
