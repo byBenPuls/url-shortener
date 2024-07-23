@@ -1,17 +1,16 @@
-import os
-import string
-import random
 import logging
-
-import src.database.caching as caching
-
+import os
+import random
+import string
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
+import src.database.caching as caching
 from src.database.caching import redis
 from src.database.postgres import Database
 
@@ -34,7 +33,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-app.mount("/src/static", StaticFiles(directory="src/static", html=True), name="static")
+
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+app.mount("/src/static", StaticFiles(directory=static_dir, html=True), name="static")
 
 templates = Jinja2Templates(directory='src/static')
 
