@@ -82,4 +82,4 @@ move to the root directory of the project and type `pip install -r requirements.
 
 For launch FastAPI I'm using `uvicorn`.
 You can choose parameters of launch (host, port) if it is necessary. 
-After this, you can start a project, for example `py main.py`.
+After this, you can start a project, for example `py setup.py`.
