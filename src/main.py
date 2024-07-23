@@ -43,6 +43,21 @@ class Item(BaseModel):
     original_url: str
 
 
+def create_url(request: Request, endpoint: str) -> str:
+    """
+    Function for creating URL string with taking into account hostname and protocol
+
+    :param request:
+    :param endpoint:
+    :return: URL string
+    """
+    protocol = {
+        True: 'https://',
+        False: 'http://'
+    }
+    return f'{protocol[request.url.is_secure]}{request.url.hostname}/{endpoint}/'
+
+
 async def create_endpoint():
     while True:
         endpoint = ''.join(random.choices(string.ascii_letters, k=20))
