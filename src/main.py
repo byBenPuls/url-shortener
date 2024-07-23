@@ -81,13 +81,12 @@ async def url_handler(item: Item, request: Request):
         search_original_url = await connection.fetchrow('SELECT * FROM links WHERE original = $1',
                                                         item.original_url)
         if search_original_url is not None:
-            return {'endpoint': f'http://{request.url.hostname}/{dict(search_original_url)["modified"]}/'}
+            return {'endpoint': f'{create_url(request, dict(search_original_url)["modified"])}'}
         await connection.execute('INSERT INTO links (original, modified) VALUES ($1, $2)',
                                  item.original_url, endpoint)
     await caching.record_in_cache(endpoint, item.original_url)
     return {
-        'endpoint': f'http://{request.url.hostname}/{endpoint}/',
-        'data': f'{request.url.is_secure}'
+        'endpoint': f'{create_url(request, endpoint)}'
     }
 
 
