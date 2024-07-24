@@ -1,9 +1,13 @@
-<div align="center">
+<p align="center">
+    <img src="assets/screen2.png" alt="image">
+</p>
 
-# URL Shortener
-
-![shortener](assets/screen2.png)
-</div>
+<p align="center">
+    <img src="https://img.shields.io/badge/python-212121?style=for-the-badge&logo=python" alt="">
+    <img src="https://img.shields.io/badge/fastapi-212121?style=for-the-badge&logo=fastapi" alt="">
+    <img src="https://img.shields.io/badge/postgresql-212121?style=for-the-badge&logo=postgresql" alt="">
+    <img src="https://img.shields.io/badge/redis-212121?style=for-the-badge&logo=redis" alt="">
+</p>
 
 ### Content:
 * **[🔥 Features](#-features)**
