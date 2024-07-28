@@ -13,6 +13,7 @@ from pydantic import BaseModel
 import src.database.caching as caching
 from src.database.caching import redis
 from src.database.postgres import Database
+import validators
 
 postgres = Database(dsn=os.getenv('DB_CONNECTION_STRING'))
 
@@ -76,6 +77,10 @@ async def main_page(request: Request):
 
 @app.post('/')
 async def url_handler(item: Item, request: Request):
+    if not validators.url(item.original_url):
+        return {'error': 'Invalid URL'}
+    if await caching.in_cache(item.original_url):
+        return {'endpoint': f'{create_url(request, item.original_url)}'}
     endpoint = await create_endpoint()
     pool = await postgres.get_connection()
     async with pool.acquire() as connection:
