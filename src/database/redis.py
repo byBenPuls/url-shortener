@@ -2,7 +2,7 @@ import logging
 import typing
 
 import redis.asyncio as redis
-
+from src.settings import settings
 logger = logging.getLogger(__name__)
 
 
@@ -12,7 +12,10 @@ class RedisPool:
 
     async def create_connection(self) -> None:
         logger.debug('Trying to connect..')
-        client = redis.ConnectionPool()
+        client = redis.ConnectionPool(host=settings.REDIS_HOST,
+                                      port=settings.REDIS_PORT,
+                                      password=settings.REDIS_PASSWORD,
+                                      db=settings.REDIS_DB)
         self.pool = redis.Redis.from_pool(client)
         logging.info(str(await self.pool.get('123')))
         logging.debug('Successfully connected!')
