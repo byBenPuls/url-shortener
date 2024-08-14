@@ -1,8 +1,10 @@
+import os
 import logging
-import asyncpg
-
-from pg_table_builder import Table, Column, Text, Serial
 from typing import Optional
+
+import asyncpg
+from src.settings import settings
+from pg_table_builder import Table, Column, Text, Serial
 
 table = Table(
     'links',
@@ -58,3 +60,6 @@ class Database:
             logger.debug('Connection closed')
         else:
             logger.warning('Cannot close database pool because pool is not created')
+
+
+postgres = Database(dsn=settings.postgres_url)
