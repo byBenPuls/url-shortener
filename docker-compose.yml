@@ -5,11 +5,13 @@ services:
     image: postgres:latest
     restart: always
     ports:
-      - "127.0.0.1:5433:5432"
+      - "5430:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=test_db
+    healthcheck:
+      test: ["CMD-SHELL", "psql"]
 
   redis:
     image: redis
